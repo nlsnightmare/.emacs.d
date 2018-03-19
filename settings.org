@@ -1,5 +1,8 @@
 * Package Initialization
   #+BEGIN_SRC emacs-lisp
+  
+  #+END_SRC
+  #+BEGIN_SRC emacs-lisp
   (require 'package)
   (setq package-enable-at-startup nil)
   (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
@@ -326,6 +329,8 @@
 ** Helm
 #+BEGIN_SRC emacs-lisp
     (define-key evil-insert-state-map (kbd "C-e") 'helm-find-files)
+    (define-key evil-normal-state-map (kbd "C-e") 'helm-find-files)
+    (define-key evil-emacs-state-map (kbd "C-e") 'helm-find-files)
     (global-set-key (kbd "C-e") 'helm-find-files)
     (global-set-key (kbd "M-x") 'helm-M-x)
     (global-set-key (kbd "C-b") 'helm-buffers-list)
