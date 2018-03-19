@@ -159,8 +159,12 @@
   (yas-global-mode t)
   (add-hook 'term-mode-hook
 	    (lambda() (setq yas-dont-activate-functions t))))
-#+END_SRC
+(advice-add 'company-complete-common :before (lambda () (setq my-company-point (point))))
+(advice-add 'company-complete-common :after (lambda ()
+  		  				(when (equal my-company-point (point))
+  			  			  (yas-expand))))
 
+#+END_SRC
 * Helm
 #+BEGIN_SRC emacs-lisp
 (use-package helm)
@@ -331,11 +335,15 @@
     (define-key evil-insert-state-map (kbd "C-e") 'helm-find-files)
     (define-key evil-normal-state-map (kbd "C-e") 'helm-find-files)
     (define-key evil-emacs-state-map (kbd "C-e") 'helm-find-files)
-    (global-set-key (kbd "C-e") 'helm-find-files)
-    (global-set-key (kbd "M-x") 'helm-M-x)
-    (global-set-key (kbd "C-b") 'helm-buffers-list)
-#+END_SRC
 
+    (define-key evil-insert-state-map (kbd "M-x") 'helm-M-x)
+    (define-key evil-normal-state-map (kbd "M-x") 'helm-M-x)
+    (define-key evil-emacs-state-map (kbd "M-x") 'helm-M-x)
+
+    (define-key evil-insert-state-map (kbd "C-b") 'helm-buffers-list)
+    (define-key evil-normal-state-map (kbd "C-b") 'helm-buffers-list)
+    (define-key evil-emacs-state-map (kbd "C-b") 'helm-buffers-list)
+#+END_SRC
 ** Neotree
 #+BEGIN_SRC emacs-lisp
   (evil-define-key 'normal neotree-mode-map (kbd "tab") 'neotree-enter)
