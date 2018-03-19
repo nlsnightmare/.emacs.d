@@ -11,6 +11,10 @@
     (package-install 'use-package))
   (setq use-package-always-ensure t)
   #+END_SRC
+* Try packages
+#+BEGIN_SRC emacs-lisp
+(use-package try)
+#+END_SRC
 * My functions
  #+BEGIN_SRC emacs-lisp
   (defun init.el ()
@@ -46,6 +50,10 @@
     "Insert a function template using yasnippet."
     (interactive)
     (yas-expand-snippet (yas-lookup-snippet "function") ))
+
+  (defun my-kill-this-buffer ()
+    (interactive)
+    (kill-buffer (current-buffer)))
  #+END_SRC
 * Appearance
 ** Neotree
@@ -150,6 +158,10 @@
 	    (lambda() (setq yas-dont-activate-functions t))))
 #+END_SRC
 
+* Helm
+#+BEGIN_SRC emacs-lisp
+(use-package helm)
+#+END_SRC
 * Org Mode
 ** Main mode
 #+BEGIN_SRC emacs-lisp
@@ -297,22 +309,28 @@
   :init (elpy-enable))
 
 #+END_SRC
+* GDB
+#+BEGIN_SRC emacs-lisp
+ (setq gdb-enable-debug t)
+ (setq gdb-many-windows t)
+#+END_SRC
 * Keybindings
 ** Evil mode
 #+BEGIN_SRC emacs-lisp
     (define-key evil-normal-state-map "K" 'move-line-up)
     (define-key evil-normal-state-map "J" 'move-line-down)
 
-    (define-key evil-normal-state-map (kbd "C-b") 'ido-switch-buffer)
-    (define-key evil-emacs-state-map (kbd "C-b") 'ido-switch-buffer)
-    (define-key evil-motion-state-map (kbd "C-b") 'ido-switch-buffer)
-
-    (define-key evil-normal-state-map (kbd "C-e") 'find-file)
-    (define-key    evil-emacs-state-map (kbd "C-e") 'find-file)
-    (define-key evil-motion-state-map (kbd "C-e") 'find-file)
     (evil-define-key 'insert emmet-mode-keymap (kbd "tab") 'emmet-expand-line)
     (global-set-key [f8] 'neotree-toggle)
 #+END_SRC
+** Helm
+#+BEGIN_SRC emacs-lisp
+    (define-key evil-insert-state-map (kbd "C-e") 'helm-find-files)
+    (global-set-key (kbd "C-e") 'helm-find-files)
+    (global-set-key (kbd "M-x") 'helm-M-x)
+    (global-set-key (kbd "C-b") 'helm-buffers-list)
+#+END_SRC
+
 ** Neotree
 #+BEGIN_SRC emacs-lisp
   (evil-define-key 'normal neotree-mode-map (kbd "tab") 'neotree-enter)
@@ -380,6 +398,11 @@
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "<f5>") 'revert-buffer)
 #+END_SRC
+** Kill current buffer with ctrl-k
+#+BEGIN_SRC emacs-lisp
+  (define-key evil-normal-state-map (kbd "C-w") 'my-kill-this-buffer)
+  (define-key evil-emacs-state-map (kbd "C-w") 'my-kill-this-buffer)
+#+END_SRC
 ** Change window with ctrl-tab
 #+BEGIN_SRC emacs-lisp
   (add-hook 'org-mode-hook
@@ -405,10 +428,5 @@
 ** Windmove
 #+BEGIN_SRC emacs-lisp
   (windmove-default-keybindings 'meta)
-#+END_SRC
-* GDB
-#+BEGIN_SRC emacs-lisp
- (setq gdb-enable-debug t)
- (setq gdb-many-windows t)
 #+END_SRC
   

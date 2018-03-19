@@ -1,4 +1,6 @@
 # -*- mode: snippet -*-
 #name : console.log
+#key  : log
+#key  : cl
 # --
 console.log($0);
