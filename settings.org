@@ -171,6 +171,11 @@
 #+END_SRC
 * Org Mode
 ** Main mode
+   
+Company Mode blocks tab when expanding org-mode 'snippets' and is not needed, therefore we disable it
+#+BEGIN_SRC emacs-lisp
+  (setq company-global-modes '(not org-mode))
+#+END_SRC
 #+BEGIN_SRC emacs-lisp
   (setq org-src-fontify-natively t)
 #+END_SRC
@@ -206,12 +211,12 @@
 * Company Mode
 ** Main Package
 #+BEGIN_SRC emacs-lisp
-  (use-package company
-    :config
-    (global-company-mode t)
-    (setq company-minimum-prefix-length 0)
-    (setq company-require-match nil)
-    (setq company-idle-delay 0.0))
+    (use-package company
+      :config
+      (global-company-mode t)
+      (setq company-minimum-prefix-length 0)
+      (setq company-require-match nil)
+      (setq company-idle-delay 0.0))
 #+END_SRC
 
 ** Company Irony
