@@ -26,6 +26,12 @@ Try allows me to try a package and having it auto-delete when emacs closes
     "This function is used to open the file ~/.emacs.d/init.el faster."
     (interactive)
     (find-file "~/.emacs.d/settings.org"))
+  (defun open-term ()
+    "Opens a terminal in a small window"
+    (interactive)
+    (select-window (split-window-vertically))
+    (shrink-window 15)
+    (eshell))
   (defun close-parenths ()
     "Closes the parenthesis of a function."
     (interactive)
@@ -175,7 +181,7 @@ Helm is a minibuffer autocompletion tool. It is used for finding files, swapping
 ** Main mode
 Company Mode blocks tab when expanding org-mode 'snippets' and is not needed, therefore we disable it
 #+BEGIN_SRC emacs-lisp
-  (setq company-global-modes '(not org-mode))
+  (setq company-global-modes '(not org-mode eshell))
 #+END_SRC
 Enable syntax highlighting for src blocks
 #+BEGIN_SRC emacs-lisp
@@ -222,7 +228,7 @@ Auto-completion framework
     (use-package company
       :config
       (global-company-mode t)
-      (setq company-minimum-prefix-length 0)
+      (setq company-minimum-prefix-length 1)
       (setq company-require-match nil)
       (setq company-idle-delay 0.0))
 #+END_SRC
