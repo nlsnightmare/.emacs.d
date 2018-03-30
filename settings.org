@@ -11,10 +11,13 @@ Initialize package,use-package and add melpa and marmalade to our sources
   (package-refresh-contents)
   (package-install 'use-package))
 #+END_SRC
+
 Make use-package download packages when not available
+
 #+BEGIN_SRC emacs-lisp
 (setq use-package-always-ensure t)
 #+END_SRC
+
 * Try packages
 Try allows me to try a package and having it auto-delete when emacs closes
 #+BEGIN_SRC emacs-lisp
@@ -153,6 +156,11 @@ Use the atom-one-dark theme, and the corresponding powerline
   (load-theme 'airline-doom-one))
 #+END_SRC
 
+* Magit 
+Magit is a way to use git inside emacs!
+#+BEGIN_SRC emacs-lisp
+  (use-package magit)
+#+END_SRC
 * Yasnippet
 Yasnippet is used for snippets
 #+BEGIN_SRC emacs-lisp
@@ -335,12 +343,21 @@ Use emmet templates for fast html writing.
 Use tern for intelligent auto-completion, and js2-mode for ide-like features
 #+BEGIN_SRC emacs-lisp
 (use-package tern)
+#+END_SRC
+
+Js2 mode for better linting
+#+BEGIN_SRC emacs-lisp
 (use-package js2-mode
   :mode "\\.js\\'"
   :init
   (add-hook 'js2-mode-hook '(lambda ()
     (tern-mode)  
     (add-to-list 'company-backends 'company-tern))))
+#+END_SRC
+
+Node Js repl
+#+BEGIN_SRC emacs-lisp
+(use-package nodejs-repl)
 #+END_SRC
 
 ** Python
