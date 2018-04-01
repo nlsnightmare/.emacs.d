@@ -129,9 +129,17 @@ Highlight TODO,FIXME in code comments
   :init
   (global-hl-todo-mode t))
 #+END_SRC
-** Misc
+** Rainbow Mode
+#+BEGIN_SRC emacs-lisp
+  (use-package rainbow-mode
+    :ensure t
+    :hook (css-mode))
+#+END_SRC
+* Misc
 Set yes-or-no prompts to be just y/n, disable toolbars etc.
 #+BEGIN_SRC emacs-lisp
+  (setq backup-directory-alist '(("" . "~/.emacs.d/emacs-backup")))
+
   (delete-selection-mode 1)
   (fset 'yes-or-no-p 'y-or-n-p)
   (setq frame-title-format (list "%b%* %m, emacs@" (getenv "COMPUTERNAME") ))
@@ -479,6 +487,8 @@ Many, many keybindings
     ;;example usage of leader key
     (global-evil-leader-mode)
     (evil-leader/set-leader "<SPC>")
+    (evil-leader/set-key
+     "m" 'magit)
     (evil-leader/set-key
      "g" 'google-this)
     (evil-leader/set-key
