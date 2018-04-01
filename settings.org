@@ -21,7 +21,7 @@ Make use-package download packages when not available
 * Try packages
 Try allows me to try a package and having it auto-delete when emacs closes
 #+BEGIN_SRC emacs-lisp
-(use-package try)
+(use-package try :ensure t)
 #+END_SRC
 * My functions
 #+BEGIN_SRC emacs-lisp
@@ -73,24 +73,28 @@ Try allows me to try a package and having it auto-delete when emacs closes
 ** Neotree
 Neotree is a file-explorer
 #+BEGIN_SRC emacs-lisp
-(use-package neotree
-  :config
-  (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
-  (setq neo-window-width 27))
+  (use-package neotree
+    :ensure t
+    :config
+    (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+    (setq neo-window-width 27))
 #+END_SRC
 ** Nlinum
 Show line numbers
 #+BEGIN_SRC emacs-lisp
-(use-package nlinum
-  :config
-  (global-nlinum-mode t))
+  (use-package nlinum
+    :ensure t
+    :config
+    (global-nlinum-mode t))
 #+END_SRC
+
 ** Indent Guide
 Display guides according to indentation.
 It can be used recursively, but it is too slow.
 It is also disabled in htlm mode.
 #+BEGIN_SRC emacs-lisp
   (use-package indent-guide
+    :ensure t
     :config
     (indent-guide-global-mode t)
     (setq indent-guide-char "|")
@@ -101,6 +105,7 @@ It is also disabled in htlm mode.
 Show a nice homepage when Emacs starts
 #+BEGIN_SRC emacs-lisp
   (use-package dashboard
+    :ensure t
     :config
     (dashboard-setup-startup-hook))
 #+END_SRC
@@ -109,6 +114,7 @@ Use a different color for each delimeter according to depth.
 Very usefull for e-lisp
 #+BEGIN_SRC emacs-lisp
 (use-package rainbow-delimiters
+  :ensure t
   :config
   (add-hook 'prog-mode-hook
      (lambda ()
@@ -119,6 +125,7 @@ Very usefull for e-lisp
 Highlight TODO,FIXME in code comments
 #+BEGIN_SRC emacs-lisp
 (use-package hl-todo
+  :ensure t
   :init
   (global-hl-todo-mode t))
 #+END_SRC
@@ -137,34 +144,42 @@ Set yes-or-no prompts to be just y/n, disable toolbars etc.
   (set-default 'truncate-lines t)
   (add-hook 'prog-mode-hook 'hs-minor-mode)
   (setq org-log-done t)
-  (set-face-attribute 'default nil :height 105)
+  (set-face-attribute 'default nil
+                      :family "InputMono"
+                      :height 105
+                      :weight 'normal
+                      :width 'normal)
   (global-hl-line-mode)
   (setq default-directory "~/Documents")
-  (use-package all-the-icons)
+  (use-package all-the-icons :ensure t)
 #+END_SRC
 ** Theme
 Use the atom-one-dark theme, and the corresponding powerline
 #+BEGIN_SRC emacs-lisp
-(use-package atom-one-dark-theme 
-  :init
-  (load-theme 'atom-one-dark))
-(use-package powerline
-  :config
-  (powerline-center-evil-theme))
-(use-package airline-themes
-  :config
-  (load-theme 'airline-doom-one))
+  (use-package atom-one-dark-theme 
+    :ensure t
+    :init
+    (load-theme 'atom-one-dark))
+  (use-package powerline
+    :ensure t
+    :config
+    (powerline-center-evil-theme))
+  (use-package airline-themes
+    :ensure t
+    :config
+    (load-theme 'airline-doom-one))
 #+END_SRC
 
 * Magit 
 Magit is a way to use git inside emacs!
 #+BEGIN_SRC emacs-lisp
-  (use-package magit)
+  (use-package magit :ensure t)
 #+END_SRC
 * Yasnippet
 Yasnippet is used for snippets
 #+BEGIN_SRC emacs-lisp
 (use-package yasnippet
+  :ensure t
   :init
   (yas-global-mode t)
   (add-hook 'term-mode-hook
@@ -183,7 +198,7 @@ The following code solves this conflict
 * Helm
 Helm is a minibuffer autocompletion tool. It is used for finding files, swapping buffers and entering commands
 #+BEGIN_SRC emacs-lisp
-(use-package helm)
+(use-package helm :ensure t)
 #+END_SRC
 * Org Mode
 ** Main mode
@@ -199,14 +214,38 @@ Enable syntax highlighting for src blocks
 Make asterisks look better
 #+BEGIN_SRC emacs-lisp
   (use-package org-bullets
+    :ensure t
     :init
     (add-hook 'org-mode-hook 'org-bullets-mode))
 #+END_SRC
+** Org Repls
+#+BEGIN_SRC emacs-lisp
+(org-babel-do-load-languages
+ 'org-babel-load-languages '(
+			     (js . t)
+			     (python . t)))
+#+END_SRC
+* Avy
+Avy is a way to move fast 
+#+BEGIN_SRC emacs-lisp
+  (use-package avy :ensure t)
+#+END_SRC
+* Fun Packages
+** Google this
+#+BEGIN_SRC emacs-lisp
+  (use-package google-this :ensure t)
+#+END_SRC
+** XKCD mode
+#+BEGIN_SRC emacs-lisp
+  (use-package xkcd :ensure t)
+#+END_SRC
+
 * Evil mode
 ** Evil
 Evil emulates vim inside emacs
 #+BEGIN_SRC emacs-lisp
   (use-package evil
+    :ensure t
     :config
     (evil-mode 1))
 #+END_SRC
@@ -214,26 +253,37 @@ Evil emulates vim inside emacs
 Select text, then press S and a delimeter to surround it with it
 #+BEGIN_SRC emacs-lisp
   (use-package evil-surround
+    :ensure t
     :config
     (global-evil-surround-mode t))
 #+END_SRC
 ** Evil Numbers
 Increase and decrease numbers
 #+BEGIN_SRC emacs-lisp
-  (use-package evil-numbers)
+  (use-package evil-numbers :ensure t)
 #+END_SRC
 ** Evil Visual Replace
 Allow replacing text in a selected region
 #+BEGIN_SRC emacs-lisp
   (use-package evil-visual-replace
+    :ensure t
     :config
     (evil-visual-replace-visual-bindings))
 #+END_SRC 
+* REST Client
+#+BEGIN_SRC emacs-lisp
+  (use-package restclient :ensure t)
+#+END_SRC
+
+#+RESULTS:
+: t
+
 * Company Mode
 ** Main Package
 Auto-completion framework
 #+BEGIN_SRC emacs-lisp
     (use-package company
+      :ensure t
       :config
       (global-company-mode t)
       (setq company-minimum-prefix-length 1)
@@ -244,13 +294,13 @@ Auto-completion framework
 ** Company Irony
 C++ smart auto-completion
 #+BEGIN_SRC emacs-lisp
-(use-package company-irony)
+(use-package company-irony :ensure t)
 (add-to-list 'company-backends '(company-irony))
 #+END_SRC
 ** Company Tern
 Javascript smart autocompletion
 #+BEGIN_SRC emacs-lisp
-(use-package company-tern)
+(use-package company-tern :ensure t)
 #+END_SRC
 * Program Modes
 ** Flycheck
@@ -258,6 +308,7 @@ On the fly syntax checker.
 *** Main Package
 #+BEGIN_SRC emacs-lisp
 (use-package flycheck
+  :ensure t 
   :init 
   (global-flycheck-mode)
   :config
@@ -268,7 +319,7 @@ On the fly syntax checker.
 *** Flycheck Irony
 Flycheck-Irony backend
 #+BEGIN_SRC emacs-lisp
-(use-package flycheck-irony)
+(use-package flycheck-irony :ensure t)
 #+END_SRC
 ** C/C++
 *** Indentation
@@ -293,27 +344,30 @@ Use c++-mode when opening arduino files, and use irony-mode for smart autocomple
 *** Irony Mode
 Inteligent c++ autocompletion
 #+BEGIN_SRC emacs-lisp
-(use-package irony
-  :hook (irony-eldoc))
+  (use-package irony
+    :ensure t
+    :hook (irony-eldoc))
 
-(setq company-clang-executable "/usr/bin/clang-5.0")
-(use-package irony-eldoc)
-(use-package company-c-headers 
-  :config 
-    (add-to-list 'company-backends 'company-c-headers))
+  (setq company-clang-executable "/usr/bin/clang-5.0")
+  (use-package irony-eldoc :ensure t)
+  (use-package company-c-headers 
+    :ensure t
+    :config 
+      (add-to-list 'company-backends 'company-c-headers))
 
 #+END_SRC
 ** Lua
 Basic lua stuff
 #+BEGIN_SRC emacs-lisp
-  (use-package lua-mode)
-  (use-package company-lua)
+  (use-package lua-mode :ensure t)
+  (use-package company-lua :ensure t)
 #+END_SRC
 ** Web
 *** Web mode
 Used for php, django and much more
 #+BEGIN_SRC emacs-lisp
 (use-package web-mode
+   :ensure t
    :init
    (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
    (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
@@ -333,6 +387,7 @@ Used for php, django and much more
 Use emmet templates for fast html writing.
 #+BEGIN_SRC emacs-lisp
 (use-package emmet-mode
+    :ensure t
     :config
     (add-hook 'sgml-mode-hook 'emmet-mode)
     (add-hook 'web-mode-hook 'emmet-mode)
@@ -342,12 +397,13 @@ Use emmet templates for fast html writing.
 *** Javascript
 Use tern for intelligent auto-completion, and js2-mode for ide-like features
 #+BEGIN_SRC emacs-lisp
-(use-package tern)
+(use-package tern :ensure t)
 #+END_SRC
 
 Js2 mode for better linting
 #+BEGIN_SRC emacs-lisp
 (use-package js2-mode
+  :ensure t
   :mode "\\.js\\'"
   :init
   (add-hook 'js2-mode-hook '(lambda ()
@@ -357,14 +413,15 @@ Js2 mode for better linting
 
 Node Js repl
 #+BEGIN_SRC emacs-lisp
-(use-package nodejs-repl)
+(use-package nodejs-repl :ensure t)
 #+END_SRC
 
 ** Python
 Elpy is a python IDE for emacs
 #+BEGIN_SRC emacs-lisp
-(use-package elpy
-  :init (elpy-enable))
+  (use-package elpy
+    :ensure t
+    :init (elpy-enable))
 
 #+END_SRC
 * GDB
@@ -409,6 +466,7 @@ Various Neotree bindings
   (evil-define-key 'normal neotree-mode-map (kbd "l"  ) 'neotree-enter)
   (evil-define-key 'normal neotree-mode-map (kbd "o"  ) 'neotree-change-root)
   (evil-define-key 'normal neotree-mode-map (kbd "q"  ) 'neotree-hide)
+  (evil-define-key 'normal neotree-mode-map (kbd "h"  ) 'neotree-hidden-file-toggle)
   (evil-define-key 'normal neotree-mode-map (kbd "<return>") 'neotree-change-root)
 #+END_SRC
 #+END_SRC
@@ -416,6 +474,7 @@ Various Neotree bindings
 Many, many keybindings
 #+BEGIN_SRC emacs-lisp
    (use-package evil-leader
+    :ensure t
     :config
     ;;example usage of leader key
     (global-evil-leader-mode)
@@ -436,6 +495,8 @@ Many, many keybindings
      "/" 'comment-region)
     (evil-leader/set-key
      "k" 'delete-window)
+    (evil-leader/set-key
+     "S" 'avy-goto-char-2)
     (evil-leader/set-key
      "s" 'avy-goto-char)
     (evil-leader/set-key
@@ -486,6 +547,7 @@ Easier Window navigation
 Quickly tab two keys to execute a function
 #+BEGIN_SRC emacs-lisp
   (use-package key-chord
+    :ensure t
     :config
     (key-chord-mode 1)
     (key-chord-define elpy-mode-map "gd" 'elpy-goto-definitionk)
