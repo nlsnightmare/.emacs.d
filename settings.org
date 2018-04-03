@@ -541,6 +541,7 @@ Many, many keybindings
 ** Kill current buffer with ctrl-k
 Allow closing the current buffer with a single keystroke
 #+BEGIN_SRC emacs-lisp
+  (define-key evil-motion-state-map (kbd "C-w") 'my-kill-this-buffer)
   (define-key evil-normal-state-map (kbd "C-w") 'my-kill-this-buffer)
   (define-key evil-emacs-state-map (kbd "C-w") 'my-kill-this-buffer)
 #+END_SRC
