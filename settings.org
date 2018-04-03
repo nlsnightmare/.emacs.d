@@ -577,3 +577,8 @@ Move around windows with meta key + arrows
   (windmove-default-keybindings 'meta)
 #+END_SRC
   
+** Magit
+#+BEGIN_SRC emacs-lisp
+(define-key magit-status-mode-map "k" 'magit-section-backward)
+(define-key magit-status-mode-map "j" 'magit-section-forward)
+#+END_SRC
