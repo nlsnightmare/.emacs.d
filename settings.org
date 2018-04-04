@@ -138,7 +138,7 @@ Highlight TODO,FIXME in code comments
 * Misc
 Set yes-or-no prompts to be just y/n, disable toolbars etc.
 #+BEGIN_SRC emacs-lisp
-  (setq backup-directory-alist '(("" . "~/.emacs.d/emacs-backup")))
+  (setq backup-directory-alist '(("" . "~/Documents/Backups")))
 
   (delete-selection-mode 1)
   (fset 'yes-or-no-p 'y-or-n-p)
@@ -153,10 +153,10 @@ Set yes-or-no prompts to be just y/n, disable toolbars etc.
   (add-hook 'prog-mode-hook 'hs-minor-mode)
   (setq org-log-done t)
   (set-face-attribute 'default nil
-                      :family "InputMono"
-                      :height 105
-                      :weight 'normal
-                      :width 'normal)
+		      :family "InputMono"
+		      :height 105
+		      :weight 'normal
+		      :width 'normal)
   (global-hl-line-mode)
   (setq default-directory "~/Documents")
   (use-package all-the-icons :ensure t)
@@ -181,7 +181,10 @@ Use the atom-one-dark theme, and the corresponding powerline
 * Magit 
 Magit is a way to use git inside emacs!
 #+BEGIN_SRC emacs-lisp
-  (use-package magit :ensure t)
+  (use-package magit
+    :ensure t
+    :config
+    (setq magit-commit-show-diff t))
 #+END_SRC
 * Yasnippet
 Yasnippet is used for snippets
@@ -189,9 +192,9 @@ Yasnippet is used for snippets
 (use-package yasnippet
   :ensure t
   :init
-  (yas-global-mode t)
-  (add-hook 'term-mode-hook
-	    (lambda() (setq yas-dont-activate-functions t))))
+  (yas-global-mode t))
+  ; (add-hook 'term-mode-hook
+	    ; (lambda() (setq yas-dont-activate-functions t))))
 #+END_SRC
 Yasnippet uses TAB to expand, same as company.
 This results in them "competing" with each other.
@@ -199,10 +202,11 @@ The following code solves this conflict
 #+BEGIN_SRC emacs-lisp
   (advice-add 'company-complete-common :before (lambda () (setq my-company-point (point))))
   (advice-add 'company-complete-common :after (lambda ()
-                                                (when (equal my-company-point (point))
-                                                  (yas-expand))))
-#+END_SRC
+						(when (equal my-company-point (point))
+						  (yas-expand))))
 
+
+#+END_SRC
 * Helm
 Helm is a minibuffer autocompletion tool. It is used for finding files, swapping buffers and entering commands
 #+BEGIN_SRC emacs-lisp
@@ -217,6 +221,10 @@ Company Mode blocks tab when expanding org-mode 'snippets' and is not needed, th
 Enable syntax highlighting for src blocks
 #+BEGIN_SRC emacs-lisp
   (setq org-src-fontify-natively t)
+#+END_SRC
+** Org Agenda
+#+BEGIN_SRC emacs-lisp
+(setq org-agenda-files '( "~/Documents/Agenda" ))
 #+END_SRC
 ** Org-Bullets
 Make asterisks look better
@@ -342,10 +350,10 @@ Use c++-mode when opening arduino files, and use irony-mode for smart autocomple
   (add-to-list 'auto-mode-alist '("\\.ino\\'" . c++-mode))
 
   (add-hook 'c++-mode-hook (lambda () 
-        (setq flycheck-clang-language-standard "c++1z")
-        (irony-mode)
+	(setq flycheck-clang-language-standard "c++1z")
+	(irony-mode)
 	(setq flycheck-clang-include-path
-	          (list (expand-file-name "~/Documents/Arduino/libraries/")))))
+		  (list (expand-file-name "~/Documents/Arduino/libraries/")))))
   (add-hook 'c-mode-hook 'irony-mode)
   (add-hook 'objc-mode-hook 'irony-mode)
 #+END_SRC
@@ -394,13 +402,14 @@ Used for php, django and much more
 *** Emmet mode
 Use emmet templates for fast html writing.
 #+BEGIN_SRC emacs-lisp
-(use-package emmet-mode
-    :ensure t
-    :config
-    (add-hook 'sgml-mode-hook 'emmet-mode)
-    (add-hook 'web-mode-hook 'emmet-mode)
-    (setq emmet-move-cursor-between-quotes t)
-    (add-hook 'css-mode-hook  'emmet-mode))
+  (use-package emmet-mode
+      :ensure t
+      :config
+      (add-hook 'sgml-mode-hook 'emmet-mode)
+      (add-hook 'web-mode-hook 'emmet-mode)
+      (add-hook 'css-mode-hook  'emmet-mode)
+      (setq emmet-move-cursor-between-quotes t)
+      (setq emmet-preview-default t))
 #+END_SRC
 *** Javascript
 Use tern for intelligent auto-completion, and js2-mode for ide-like features
@@ -410,13 +419,20 @@ Use tern for intelligent auto-completion, and js2-mode for ide-like features
 
 Js2 mode for better linting
 #+BEGIN_SRC emacs-lisp
-(use-package js2-mode
-  :ensure t
-  :mode "\\.js\\'"
-  :init
-  (add-hook 'js2-mode-hook '(lambda ()
-    (tern-mode)  
-    (add-to-list 'company-backends 'company-tern))))
+  (use-package js2-mode
+    :ensure t
+    :mode "\\.js\\'"
+    :init
+    (add-hook 'js2-mode-hook '(lambda ()
+      (tern-mode)  
+      (add-to-list 'company-backends 'company-tern)))
+    (setq-default js2-global-externs
+		  '("module" "require" "buster"
+		    "sinon" "assert" "refute"
+		    "setTimeout" "clearTimeout"
+		    "setInterval" "clearInterval"
+		    "location" "__dirname"
+		    "console" "JSON")))
 #+END_SRC
 
 Node Js repl
@@ -479,61 +495,64 @@ Various Neotree bindings
 #+END_SRC
 #+END_SRC
 ** Evil Leader
-Many, many keybindings
-#+BEGIN_SRC emacs-lisp
-   (use-package evil-leader
-    :ensure t
-    :config
-    ;;example usage of leader key
-    (global-evil-leader-mode)
-    (evil-leader/set-leader "<SPC>")
-    (evil-leader/set-key
-     "m" 'magit)
-    (evil-leader/set-key
-     "g" 'google-this)
-    (evil-leader/set-key
-     "c" 'comment-line)
-    (evil-leader/set-key-for-mode 'csharp-mode
-				  "r" 'omnisharp-rename)
-    (evil-leader/set-key-for-mode 'python-mode
-				  "r" 'elpy-multiedit-python-symbol-at-point)
-    (evil-leader/set-key
-     "|" 'split-window-right)
-    (evil-leader/set-key
-     "-" 'split-window-below)
-    (evil-leader/set-key
-     "/" 'comment-region)
-    (evil-leader/set-key
-     "k" 'delete-window)
-    (evil-leader/set-key
-     "S" 'avy-goto-char-2)
-    (evil-leader/set-key
-     "s" 'avy-goto-char)
-    (evil-leader/set-key
-     "i" 'evil-numbers/inc-at-pt)
-    (evil-leader/set-key
-     "d" 'evil-numbers/dec-at-pt)
-    (evil-leader/set-key
-     "f" 'my-insert-function)
-    (evil-leader/set-key
-     "l" 'flycheck-list-errors)
-    (evil-leader/set-key-for-mode 'glsl-mode
-				  "h" 'ff-find-other-file)
-    (evil-leader/set-key-for-mode 'c++-mode
-				  "h" 'ff-find-other-file)
-    (evil-leader/set-key
-     "e" 'eval-and-replace)
-    (evil-leader/set-key-for-mode 'js2-mode
-				  "e" 'nodejs-repl-send-region)
-    (evil-leader/set-key-for-mode 'python-mode
-				  "e" 'elpy-shell-send-region-or-buffer)
-    (evil-leader/set-key
-     "q" 'server-edit)
-    (evil-leader/set-key-for-mode 'csharp-mode
-				  "p" 'maybe-start-omnisharp)
-    (evil-leader/set-key
-     "x" 'xkcd-rand))
-#+END_SRC
+   Many, many keybindings
+   #+BEGIN_SRC emacs-lisp
+     (use-package evil-leader
+      :ensure t
+      :config
+      ;;example usage of leader key
+      (global-evil-leader-mode)
+      (evil-leader/set-leader "<SPC>")
+      (evil-leader/set-key "m"
+        '(lambda()
+           (interactive)
+           (neotree-hide)
+           (magit)))
+      (evil-leader/set-key
+       "g" 'google-this)
+      (evil-leader/set-key
+       "c" 'comment-line)
+      (evil-leader/set-key-for-mode 'csharp-mode
+                                    "r" 'omnisharp-rename)
+      (evil-leader/set-key-for-mode 'python-mode
+                                    "r" 'elpy-multiedit-python-symbol-at-point)
+      (evil-leader/set-key
+       "|" 'split-window-right)
+      (evil-leader/set-key
+       "-" 'split-window-below)
+      (evil-leader/set-key
+       "/" 'comment-region)
+      (evil-leader/set-key
+       "k" 'delete-window)
+      (evil-leader/set-key
+       "S" 'avy-goto-char-2)
+      (evil-leader/set-key
+       "s" 'avy-goto-char)
+      (evil-leader/set-key
+       "i" 'evil-numbers/inc-at-pt)
+      (evil-leader/set-key
+       "d" 'evil-numbers/dec-at-pt)
+      (evil-leader/set-key
+       "f" 'my-insert-function)
+      (evil-leader/set-key
+       "l" 'flycheck-list-errors)
+      (evil-leader/set-key-for-mode 'glsl-mode
+                                    "h" 'ff-find-other-file)
+      (evil-leader/set-key-for-mode 'c++-mode
+                                    "h" 'ff-find-other-file)
+      (evil-leader/set-key
+       "e" 'eval-and-replace)
+      (evil-leader/set-key-for-mode 'js2-mode
+                                    "e" 'nodejs-repl-send-region)
+      (evil-leader/set-key-for-mode 'python-mode
+                                    "e" 'elpy-shell-send-region-or-buffer)
+      (evil-leader/set-key
+       "q" 'server-edit)
+      (evil-leader/set-key-for-mode 'csharp-mode
+                                    "p" 'maybe-start-omnisharp)
+      (evil-leader/set-key
+       "x" 'xkcd-rand))
+   #+END_SRC
 ** Refresh buffer
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "<f5>") 'revert-buffer)
@@ -567,6 +586,7 @@ Quickly tab two keys to execute a function
 ** Company
 Use more familliar keybindings for company
 #+BEGIN_SRC emacs-lisp
+(define-key evil-insert-state-map (kbd "C-j") 'yas-expand)
     (define-key evil-insert-state-map (kbd "C-SPC") 'company-complete)
     (define-key company-active-map (kbd "C-n") 'company-select-next-or-abort)
     (define-key company-active-map (kbd "C-p") 'company-select-previous-or-abort)
