@@ -3,4 +3,4 @@
 # key: imm
 # group: es6
 # --
-import { ${1:member1}, ${2:member2} } from '${3:module}';
+import { ${1:member1} } from '${3:module}';
