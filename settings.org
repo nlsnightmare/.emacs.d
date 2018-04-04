@@ -56,10 +56,10 @@ Try allows me to try a package and having it auto-delete when emacs closes
     (interactive)
     (backward-kill-sexp)
     (condition-case nil
-        (prin1 (eval (read (current-kill 0)))
-               (current-buffer))
+	(prin1 (eval (read (current-kill 0)))
+	       (current-buffer))
       (error (message "Invalid expression")
-             (insert (current-kill 0)))))
+	     (insert (current-kill 0)))))
   (defun my-insert-function ()
     "Insert a function template using yasnippet."
     (interactive)
