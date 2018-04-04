@@ -3,6 +3,6 @@
 # key: met
 # group: es6
 # --
-${1:name}(${2:arg}) {
+${1:name}($2) {
   $0
 }
