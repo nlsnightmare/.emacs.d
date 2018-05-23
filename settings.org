@@ -384,7 +384,7 @@ Inteligent c++ autocompletion
     :ensure t
     :hook (irony-eldoc))
 
-  (setq company-clang-executable "/usr/bin/clang-5.0")
+  (setq company-clang-executable "/usr/bin/clang-6.0")
   (use-package irony-eldoc :ensure t)
   (use-package company-c-headers 
     :ensure t
