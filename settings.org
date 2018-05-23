@@ -324,6 +324,13 @@ Javascript smart autocompletion
 #+BEGIN_SRC emacs-lisp
 (use-package company-tern :ensure t)
 #+END_SRC
+** Company Racer
+#+BEGIN_SRC emacs-lisp
+  (use-package company-racer
+    :ensure t
+    :init (add-to-list 'company-backends 'company-racer))
+
+#+END_SRC
 * Program Modes
 ** Flycheck
 On the fly syntax checker.
@@ -342,6 +349,13 @@ On the fly syntax checker.
 Flycheck-Irony backend
 #+BEGIN_SRC emacs-lisp
 (use-package flycheck-irony :ensure t)
+#+END_SRC
+*** Flycheck Rust
+Flycheck-Rust backend
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck-rust :ensure t
+    :init
+    (add-hook 'flycheck-mode-hook #'flycheck-rust-setup))
 #+END_SRC
 ** C/C++
 *** Indentation
@@ -453,6 +467,27 @@ Elpy is a python IDE for emacs
     :ensure t
     :init (elpy-enable))
 
+#+END_SRC
+** Rust
+#+BEGIN_SRC emacs-lisp
+    (use-package rust-mode
+      :ensure t)
+
+    ;(use-package cargo
+      ;:ensure t
+      ;:config 
+      ;(add-hook 'rust-mode-hook 'cargo-minor-mode))
+
+
+    (use-package toml-mode
+      :ensure t)
+#+END_SRC
+
+** GLSL mode
+#+BEGIN_SRC emacs-lisp
+  (use-package glsl-mode
+    :ensure t
+    :mode ("\\.frag\\'" "\\.vert\\'"))
 #+END_SRC
 * GDB
 Basic GDB settings for c++ debugging
