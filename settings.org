@@ -577,6 +577,8 @@ Various Neotree bindings
        "f" 'my-insert-function)
       (evil-leader/set-key
        "l" 'flycheck-list-errors)
+      (evil-leader/set-key
+        "j" 'join-line)
       (evil-leader/set-key-for-mode 'glsl-mode
                                     "h" 'ff-find-other-file)
       (evil-leader/set-key-for-mode 'c++-mode
