@@ -29,12 +29,18 @@ Try allows me to try a package and having it auto-delete when emacs closes
     "This function is used to open the file ~/.emacs.d/init.el faster."
     (interactive)
     (find-file "~/.emacs.d/settings.org"))
+
+  (defun install.sh ()
+    "This function is used to open the my installation file"
+    (interactive)
+    (find-file "~/Documents/install.sh"))
   (defun open-term ()
     "Opens a terminal in a small window"
     (interactive)
     (select-window (split-window-vertically))
     (shrink-window 15)
     (eshell))
+
   (defun close-parenths ()
     "Closes the parenthesis of a function."
     (interactive)
