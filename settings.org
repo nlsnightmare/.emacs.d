@@ -341,7 +341,7 @@ On the fly syntax checker.
   :init 
   (global-flycheck-mode)
   :config
-  (setq flycheck-c/c++-clang-executable "/usr/bin/clang-5.0")
+  (setq flycheck-c/c++-clang-executable "/usr/bin/clang-6.0")
   (setq flycheck-gcc-language-standard "c++17")
   (setq irony-eldoc-use-unicode t))
 #+END_SRC
