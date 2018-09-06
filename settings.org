@@ -406,6 +406,8 @@ Used for php, django and much more
    :ensure t
    :init
    (add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+   (add-to-list 'auto-mode-alist '("\\.php\\'" . web-mode))
+   (add-to-list 'auto-mode-alist '("\\.blade.php\\'" . web-mode))
    (add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
    (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
    (add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
@@ -416,8 +418,13 @@ Used for php, django and much more
    (defun my-web-mode-hook ()
      "Hooks for Web mode."
      (electric-indent-mode nil)
+     (make-local-variable 'company-backends)
+     (add-to-list 'company-backends 'company-ac-php-backend) ;; not good 
      (setq web-mode-markup-indent-offset 2))  
    (add-hook 'web-mode-hook  'my-web-mode-hook))
+
+(use-package company-php :ensure t)
+(use-package ac-php-company :ensure t)
 #+END_SRC
 *** Emmet mode
 Use emmet templates for fast html writing.
